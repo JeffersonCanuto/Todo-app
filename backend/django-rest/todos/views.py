@@ -1,6 +1,12 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response 
 
 # Create your views here.
+@api_view(["GET"])
 def ApiOverview(request):
-    return JsonResponse("Hi", safe=False)
+    return Response({
+        "Create": "/todo-create/",
+        "Read": "/todo-read/<str:pk>",
+        "Update": "/todo-update/<str:pk>/",
+        "Delete": "/todo-delete/<str:pk>/"
+    })
