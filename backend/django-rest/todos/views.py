@@ -14,6 +14,15 @@ def ApiOverview(request):
         "Delete": "/todo-delete/<str:pk>/"
     })
 
+@api_view(["POST"])
+def TodoCreate(request):
+    serializer = TodoSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    
+    return Response(serializer.data)
+
 @api_view(["GET"])
 def TodoRead(request, pk):
     if pk == 'all':
