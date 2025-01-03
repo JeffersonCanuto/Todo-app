@@ -12,7 +12,7 @@ from .serializers import TodoSerializer
 def ApiOverview(request):
     return Response({
         "Create": "/todo-create/",
-        "Read": "/todo-read/<str:pk>",
+        "Read": "/todo-read/<str:pk>/",
         "Update": "/todo-update/<str:pk>/",
         "Delete": "/todo-delete/<str:pk>/"
     }, status.HTTP_200_OK)
@@ -61,3 +61,10 @@ def TodoUpdate(request, pk):
             return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
     except Exception as err:
         return Response({"error": "Todo not found...", "details": str(err)}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(["DELETE"])
+def TodoDelete(request, pk):
+    todo = get_object_or_404(Todo, id=pk)
+    todo.delete()
+
+    return Response({"message": "Todo deleted successfully..."}, status=status.HTTP_204_NO_CONTENT)
