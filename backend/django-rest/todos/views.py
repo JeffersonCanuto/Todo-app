@@ -19,12 +19,17 @@ def ApiOverview(request):
 
 @api_view(["POST"])
 def TodoCreate(request):
-    serializer = TodoSerializer(data=request.data)
+    try: 
+        serializer = TodoSerializer(data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
-    
-    return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data, status.HTTP_200_OK)
+        else:
+            return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+    except Exception as err:
+        return Response({"error": "Not possible to create todo...", "details": str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["GET"])
 def TodoRead(request, pk):
@@ -56,6 +61,3 @@ def TodoUpdate(request, pk):
             return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
     except Exception as err:
         return Response({"error": "Todo not found...", "details": str(err)}, status=status.HTTP_404_NOT_FOUND)
-    
-    
-
