@@ -5,16 +5,7 @@ import { InputLabel } from '@mui/material';
 import Buttons from "./Buttons";
 import Inputs from "./Inputs";
 
-type InputProps = {
-    titleType: string;
-    titleHolder: string;
-    titleName: string;
-    titleId: string;
-    descType: string;
-    descHolder: string;
-    descName: string;
-    descId: string;
-};
+import { InputProps } from "../types/props";
 
 const Todo:React.FC<InputProps> = (props) => {
     return (

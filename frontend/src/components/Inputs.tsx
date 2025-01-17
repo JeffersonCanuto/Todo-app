@@ -4,16 +4,7 @@ import clsx from "clsx";
 
 import { Input } from '@mui/material';
 
-type InputProps = {
-    titleType: string;
-    titleHolder: string;
-    titleName: string;
-    titleId: string;
-    descType: string;
-    descHolder: string;
-    descName: string;
-    descId: string;
-};
+import { InputProps } from "../types/props";
 
 const Inputs:React.FC<InputProps> = ({
     titleType,
