@@ -1,6 +1,8 @@
 import React from "react";
 
 import { CiCircleList } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa";
+import { MdFilterList } from "react-icons/md";
 
 import clsx from "clsx";
 
@@ -78,17 +80,31 @@ const TodoInsert:React.FC<InputProps> = (
                     <CiCircleList className="mt-5 ml-4 text-2xl text-blue-400" />
                 </div>
             </div>
-            <div className="w-[8vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
+            <div className="w-[9vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
                 {[...Array(2)].map((_, index) => (
-                    <Button 
+                    <Button
+                        key={index}
                         variant="outlined"
                         sx={{
-                            width: "60px",
+                            width: "82px",
                             height: "40px",
-                            fontWeight: "bold"
+                            fontWeight: "bold",
+                            display: "flex",
+                            justifyContent: "space-between"
                         }}
                     >
-                        {index === 0 ? "Add" : "List"}
+                        {index === 0 ? (
+                            <>
+                                Add
+                                <FaPlus className="mb-1 text-[12px]"/>
+                            </>
+                        ): 
+                            
+                            <>
+                                List
+                                <MdFilterList className="mb-1 text-[16px]"/>
+                            </>
+                        }
                     </Button>
                 ))}
             </div>
