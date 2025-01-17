@@ -1,14 +1,11 @@
 import React from "react";
 
-import { FaPlus } from "react-icons/fa";
-import { MdFilterList } from "react-icons/md";
-
 import clsx from "clsx";
 
 import { Input } from '@mui/material';
 import { InputLabel } from '@mui/material';
 
-import { Button } from '@mui/material';
+import Buttons from "./Buttons";
 
 type InputProps = {
     titleType: string;
@@ -76,32 +73,7 @@ const Todo:React.FC<InputProps> = (
                 ))}
             </div>
             <div className="w-[10vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
-                {[...Array(2)].map((_, index) => (
-                    <Button
-                        key={index}
-                        variant="outlined"
-                        sx={{
-                            width: "82px",
-                            height: "40px",
-                            fontWeight: "bold",
-                            display: "flex",
-                            justifyContent: "space-between"
-                        }}
-                    >
-                        {index === 0 ? (
-                            <>
-                                Add
-                                <FaPlus className="mb-1 text-[12px]"/>
-                            </>
-                        ): 
-                            
-                            <>
-                                List
-                                <MdFilterList className="mb-1 text-[16px]"/>
-                            </>
-                        }
-                    </Button>
-                ))}
+                <Buttons />
             </div>
         </main>
     );
