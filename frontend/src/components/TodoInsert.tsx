@@ -1,6 +1,5 @@
 import React from "react";
 
-import { CiCircleList } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
 
@@ -47,40 +46,36 @@ const TodoInsert:React.FC<InputProps> = (
                 >
                     TO-DO:
                 </InputLabel>
-                <Input
-                    type={titleType}
-                    placeholder={titleHolder}
-                    name={titleName}
-                    id={titleId}
-                    className={clsx(
-                        "sm:w-24 md:w-40",
-                        "mr-2"
-                    )}
-                    sx={{
-                        input: { 
-                            color: "#76bdd5",
-                            fontWeight: "bold"
+                {[...Array(2)].map((_, index) => (
+                    <Input
+                        type={index === 0 ? titleType : descType}
+                        placeholder={index === 0 ? titleHolder : descHolder}
+                        name={index === 0 ? titleName : descName}
+                        id={index === 0 ? titleId : descId}
+                        className={
+                            index === 0 ? clsx(
+                                "sm:w-24 md:w-40",
+                                "mr-2"
+                            ) : undefined
                         }
-                    }}
-                />
-                <Input
-                    type={descType}
-                    placeholder={descHolder}
-                    name={descName}
-                    id={descId}
-                    sx={{
-                        width: "20vw",
-                        input: { 
-                            color: "#76bdd5",
-                            fontWeight: "bold"
+                        sx={
+                            index === 0 ? {
+                                input: { 
+                                    color: "#76bdd5",
+                                    fontWeight: "bold"
+                                }
+                            } : {
+                                width: "20vw",
+                                input: { 
+                                    color: "#76bdd5",
+                                    fontWeight: "bold"
+                                }
+                            }
                         }
-                    }}
-                />
-                <div className="hidden xl:block">
-                    <CiCircleList className="mt-5 ml-4 text-2xl text-blue-400" />
-                </div>
+                    />
+                ))}
             </div>
-            <div className="w-[9vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
+            <div className="w-[10vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
                 {[...Array(2)].map((_, index) => (
                     <Button
                         key={index}
