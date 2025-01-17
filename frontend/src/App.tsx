@@ -2,7 +2,7 @@ import React from 'react';
 
 import { LuNotebookPen } from "react-icons/lu";
 
-import TodoInsert from "./components/TodoInsert";
+import Todo from "./components/Todo";
 
 interface TitleProps {
 	titleType: string;
@@ -41,7 +41,7 @@ const App:React.FC = () => {
 					<LuNotebookPen className="ml-4" />
 				</h1>
 				<hr className="relative top-12" />
-				<TodoInsert
+				<Todo
 					{...titleProps}
 					{...descriptionProps}
 				/>

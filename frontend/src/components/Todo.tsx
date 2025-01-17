@@ -21,7 +21,7 @@ type InputProps = {
     descId: string;
 };
 
-const TodoInsert:React.FC<InputProps> = (
+const Todo:React.FC<InputProps> = (
     {
         titleType,
         titleHolder,
@@ -107,4 +107,4 @@ const TodoInsert:React.FC<InputProps> = (
     );
 }
 
-export default TodoInsert;
+export default Todo;
