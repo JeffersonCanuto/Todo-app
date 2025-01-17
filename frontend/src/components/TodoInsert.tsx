@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CiBoxList } from "react-icons/ci";
+import { CiCircleList } from "react-icons/ci";
 
 import clsx from "clsx";
 
@@ -17,7 +17,7 @@ type InputProps = {
     descType: string;
     descHolder: string;
     descName: string;
-    descId: string
+    descId: string;
 };
 
 const TodoInsert:React.FC<InputProps> = (
@@ -35,7 +35,16 @@ const TodoInsert:React.FC<InputProps> = (
     return (
         <main className="w-full flex relative left-8 top-20 gap-5">
             <div className="grid grid-cols-1 sm:gap-5 xl:gap-0 xl:flex">
-                <InputLabel className="mr-4 mt-3" htmlFor="todo">TO-DO:</InputLabel>
+                <InputLabel 
+                    className="mr-4 mt-3" 
+                    htmlFor="todo"
+                    sx={{
+                        color: "#5fa6ec",
+                        fontWeight: "bold"
+                    }}
+                >
+                    TO-DO:
+                </InputLabel>
                 <Input
                     type={titleType}
                     placeholder={titleHolder}
@@ -45,6 +54,12 @@ const TodoInsert:React.FC<InputProps> = (
                         "sm:w-24 md:w-40",
                         "mr-2"
                     )}
+                    sx={{
+                        input: { 
+                            color: "#76bdd5",
+                            fontWeight: "bold"
+                        }
+                    }}
                 />
                 <Input
                     type={descType}
@@ -52,32 +67,30 @@ const TodoInsert:React.FC<InputProps> = (
                     name={descName}
                     id={descId}
                     sx={{
-                        width: "20vw"
+                        width: "20vw",
+                        input: { 
+                            color: "#76bdd5",
+                            fontWeight: "bold"
+                        }
                     }}
                 />
                 <div className="hidden xl:block">
-                    <CiBoxList className="mt-5 ml-4 text-2xl" />
+                    <CiCircleList className="mt-5 ml-4 text-2xl text-blue-400" />
                 </div>
             </div>
             <div className="w-[8vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
-                <Button 
-                    variant="outlined"
-                    sx={{
-                        width: "60px",
-                        height: "40px"
-                    }}
-                >
-                    Add
-                </Button>
-                <Button 
-                    variant="outlined"
-                    sx={{
-                        width: "60px",
-                        height: "40px"
-                    }}
-                >
-                    List
-                </Button>
+                {[...Array(2)].map((_, index) => (
+                    <Button 
+                        variant="outlined"
+                        sx={{
+                            width: "60px",
+                            height: "40px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        {index === 0 ? "Add" : "List"}
+                    </Button>
+                ))}
             </div>
         </main>
     );
