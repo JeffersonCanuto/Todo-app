@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState }from "react";
 
 import { FaPlus } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
 
 import { Button } from '@mui/material';
 
-const Buttons:React.FC = () => {
+import { TodoProps } from "../types/props";
+
+import { readData } from "../services/apiRequests";
+
+type ButtonProps = { 
+    setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | undefined>>
+};
+
+const Buttons:React.FC<ButtonProps> = ({ setTodos }) => {
+    const handleAddTodos = () => {
+        console.log("Add todos!");
+    }
+    
+    const handleListTodos = async () => {
+        setTodos(await readData());
+    }
+
     return (
         <>
             {[...Array(2)].map((_, index) => (
@@ -19,6 +35,7 @@ const Buttons:React.FC = () => {
                         display: "flex",
                         justifyContent: "space-between"
                     }}
+                    onClick={index === 0 ? handleAddTodos : handleListTodos}
                 >
                     {index === 0 ? (
                         <>
