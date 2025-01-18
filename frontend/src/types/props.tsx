@@ -8,3 +8,10 @@ export type InputProps = {
     descName: string;
     descId: string;
 };
+
+export type TodoProps = {
+    id: number;
+    title: string;
+    description: string;
+    completed: boolean;
+};

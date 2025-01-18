@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { LuNotebookPen } from "react-icons/lu";
+
+import { TodoProps } from "./types/props";
 
 import Todo from "./components/Todo";
 
@@ -23,7 +25,7 @@ interface DescriptionProps {
 	descHolder: string;
 	descName: string;
 	descId: string;
-}
+};
 
 const descriptionProps: DescriptionProps = {
 	descType: "description",
@@ -33,6 +35,10 @@ const descriptionProps: DescriptionProps = {
 } as const;
 
 const App:React.FC = () => {
+	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
+
+	console.log(todos);
+
   	return (
     	<div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-300">
 			<form className="w-[48vw] h-[90vh] mx-auto flex flex-col bg-white rounded-3xl">
@@ -44,7 +50,9 @@ const App:React.FC = () => {
 				<Todo
 					{...titleProps}
 					{...descriptionProps}
+					setTodos={setTodos}
 				/>
+				<br />
 			</form>
 		</div>
   	)
