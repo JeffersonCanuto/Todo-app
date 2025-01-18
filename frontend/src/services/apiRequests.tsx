@@ -25,7 +25,7 @@ const readData = async():Promise<Todo[] | undefined> => {
         
         return await response.json();
     } catch(error:any) {
-        console.log(`${error.message}`);
+        console.error(`${error.message}`);
     }
 }
 
