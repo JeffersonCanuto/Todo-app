@@ -8,9 +8,12 @@ import Inputs from "./Inputs";
 import { InputProps } from "../types/props";
 import { TodoProps } from "../types/props";
 
-type Todos = InputProps & { setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | undefined>> };
+type Todos = InputProps & {
+    todos: TodoProps[] | [];
+    setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
+};
 
-const Todo:React.FC<Todos> = ({setTodos, ...props}) => {
+const Todo:React.FC<Todos> = ({todos, setTodos, ...props}) => {
     return (
         <main className="w-full flex relative left-8 top-20 gap-5">
             <div className="grid grid-cols-1 sm:gap-5 xl:gap-0 xl:flex">
@@ -27,7 +30,7 @@ const Todo:React.FC<Todos> = ({setTodos, ...props}) => {
                 <Inputs {...props} />
             </div>
             <div className="w-[10vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
-                <Buttons setTodos={setTodos} />
+                <Buttons todos={todos} setTodos={setTodos} />
             </div>
         </main> 
     );

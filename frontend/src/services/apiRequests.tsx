@@ -6,7 +6,7 @@ type Todo = {
     completed: boolean;
 }
 
-const readData = async():Promise<Todo[] | undefined> => {
+const readData = async():Promise<Todo[] | []> => {
     try {
         const
             host:string = import.meta.env.VITE_API_HOST,
@@ -26,6 +26,8 @@ const readData = async():Promise<Todo[] | undefined> => {
         return await response.json();
     } catch(error:any) {
         console.error(`${error.message}`);
+
+        return [];
     }
 }
 

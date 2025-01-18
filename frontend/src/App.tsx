@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-
 import { LuNotebookPen } from "react-icons/lu";
 
 import { TodoProps } from "./types/props";
 
+import DataTable from './components/DataTable';
 import Todo from "./components/Todo";
 
 interface TitleProps {
@@ -35,9 +35,7 @@ const descriptionProps: DescriptionProps = {
 } as const;
 
 const App:React.FC = () => {
-	const [ todos, setTodos ] = useState<TodoProps[] | undefined>([]);
-
-	console.log(todos);
+	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
 
   	return (
     	<div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-300">
@@ -50,9 +48,11 @@ const App:React.FC = () => {
 				<Todo
 					{...titleProps}
 					{...descriptionProps}
+					todos={todos}
 					setTodos={setTodos}
 				/>
 				<br />
+				<DataTable todos={todos} />
 			</form>
 		</div>
   	)
