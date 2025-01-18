@@ -35,7 +35,7 @@ const descriptionProps: DescriptionProps = {
 } as const;
 
 const App:React.FC = () => {
-	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
+	const [ todos, setTodos ] = useState<TodoProps[] | undefined>([]);
 
 	console.log(todos);
 
