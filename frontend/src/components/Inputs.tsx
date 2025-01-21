@@ -20,6 +20,7 @@ const Inputs:React.FC<InputProps> = ({
         <>
             {[...Array(2)].map((_, index) => (
                 <Input
+                    key={index}
                     type={index === 0 ? titleType : descType}
                     placeholder={index === 0 ? titleHolder : descHolder}
                     name={index === 0 ? titleName : descName}
