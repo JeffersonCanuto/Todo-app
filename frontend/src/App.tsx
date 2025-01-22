@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LuNotebookPen } from "react-icons/lu";
 
-import { TodoProps } from "./types/props";
+import { TodoProps } from "./@types/props";
 
 import DataTable from './components/DataTable';
 import Todo from "./components/Todo";

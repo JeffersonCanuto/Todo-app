@@ -6,7 +6,7 @@ import { RxUpdate } from "react-icons/rx";
 
 import { Button } from '@mui/material';
 
-import { TodoProps } from "../types/props";
+import { TodoProps } from "../@types/props";
 
 import { readData } from "../services/apiRequests";
 
