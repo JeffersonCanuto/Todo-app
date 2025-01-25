@@ -22,8 +22,16 @@ interface Todo {
     todos: TodoProps[] | []
 }
 
+interface ColumnsItems {
+    name: string;
+    label: string;
+    options: {
+        filter: boolean,
+        sort: boolean
+    }
+}
 
-let columns = [
+let columns:ColumnsItems[] = [
     {
         name: "title",
         label: "TITLE",
