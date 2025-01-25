@@ -1,6 +1,8 @@
 import React, { useCallback }from "react";
 
 import Box from '@mui/material/Box';
+import Tooltip from "@mui/material/Tooltip";
+
 import { 
     createTheme, 
     StyledEngineProvider, 
@@ -19,6 +21,7 @@ import { TodoProps } from "../@types/props";
 interface Todo {
     todos: TodoProps[] | []
 }
+
 
 let columns = [
     {
@@ -100,26 +103,29 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
                                         ...column.options,
                                         customBodyRender: (value:boolean) => {
                                             return value === false && (
-                                                <div style={{ 
-                                                    width: "60px", 
-                                                    display: "flex", 
+                                                <Box style={{
+                                                    width: "60px",
+                                                    display: "flex",
                                                     justifyContent: "space-between", 
                                                     alignItems: "center"
                                                 }}>
-                                                    
-                                                    <button 
-                                                        aria-label="check-todo-finished" 
-                                                        onClick={handleFinishedButton}
-                                                    >
-                                                        <FaCheck style={{ color: "default"}}/>
-                                                    </button>
-                                                    <button 
-                                                        aria-label="check-todo-unfinished" 
-                                                        onClick={handleUnfinishedButton}
-                                                    >
-                                                        <FaXmark style={{ color: "default"}} />
-                                                    </button>  
-                                                </div>
+                                                    <Tooltip title="Finished">
+                                                        <button
+                                                            aria-label="check-todo-finished" 
+                                                            onClick={handleFinishedButton}
+                                                        >
+                                                            <FaCheck style={{ color: "default"}}/>
+                                                        </button>
+                                                    </Tooltip>
+                                                    <Tooltip title="Unfinished">
+                                                        <button
+                                                            aria-label="check-todo-unfinished"
+                                                            onClick={handleUnfinishedButton}
+                                                        >
+                                                            <FaXmark style={{ color: "default"}} />
+                                                        </button> 
+                                                    </Tooltip>
+                                                </Box>
                                             )
                                         }
                                     }
@@ -132,19 +138,23 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
                                         ...column.options,
                                         customBodyRender: (value:boolean) => {
                                             return value === false && (
-                                                <div style={{ 
+                                                <Box style={{ 
                                                     width: "60px", 
                                                     display: "flex", 
                                                     justifyContent: "space-between", 
                                                     alignItems: "center"
                                                 }}>
-                                                    <button aria-label="edit-todo">
-                                                        <PiPlusBold />
-                                                    </button>
-                                                    <button atria-label="delete-todo">
-                                                        <BsTrash />
-                                                    </button>
-                                                </div>
+                                                    <Tooltip title="Edit">
+                                                        <button aria-label="edit-todo">
+                                                            <PiPlusBold />
+                                                        </button>
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete">
+                                                        <button atria-label="delete-todo">
+                                                            <BsTrash />
+                                                        </button>
+                                                    </Tooltip>
+                                                </Box>
                                             )
                                         }
                                     }
