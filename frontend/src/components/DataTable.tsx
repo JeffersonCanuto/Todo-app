@@ -9,16 +9,16 @@ import {
 
 import MUIDataTable from "mui-datatables";
 
-import { TodoProps } from "../types/props"; 
+import { TodoProps } from "../@types/props"; 
 
 interface Todo {
-    todos: TodoProps[] | undefined
+    todos: TodoProps[] | []
 }
 
 const columns = [
     {
         name: "title",
-        label: "Title",
+        label: "TITLE",
         options: {
             filter: true,
             sort: true
@@ -26,7 +26,7 @@ const columns = [
     },
     {
         name: "description",
-        label: "Description",
+        label: "DESCRIPTION",
         options: {
             filter: true,
             sort: true
@@ -34,21 +34,60 @@ const columns = [
     },
     {
         name: "status",
-        label: "Status",
+        label: "STATUS",
         options: {
             filter: false,
-            sort: false
+            sort: false,
+            customBodyRender: (value:boolean) => {
+                return value === false && (
+                    <div style={{ 
+                        width: "60px", 
+                        display: "flex", 
+                        justifyContent: "space-between", 
+                        alignItems: "center"
+                    }}>
+                        <button>Fin</button>
+                        <button>Unf</button>
+                    </div>
+                )
+            }
         }
     },
     {
         name: "actions",
-        label: "Actions",
+        label: "ACTIONS",
         options: {
             filter: false,
-            sort: false
+            sort: false,
+            customBodyRender: (value:boolean) => {
+                return value === false && (
+                    <div style={{ 
+                        width: "60px", 
+                        display: "flex", 
+                        justifyContent: "space-between", 
+                        alignItems: "center"
+                    }}>
+                        <button>Fin</button>
+                        <button>Unf</button>
+                    </div>
+                )
+            }
         }
     },
 ];
+
+const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
+    return todos.map(todo => {
+        const { 
+            title,
+            description,
+            status,
+            actions
+        } = todo;
+
+        return [title, description, status, actions];
+    });
+} 
 
 const DataTable:React.FC<Todo> = ({ todos }) => {
     return (
@@ -56,14 +95,16 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
             <ThemeProvider theme={createTheme()}>
                 <Box style={{ 
                     width: "93%", 
-                    minHeight: "350px", 
+                    minHeight: "400px",
                     margin: "auto"
                 }}>
                     <MUIDataTable
                         title="TO-DO LIST"
+                        data={customizeData(todos)}
                         columns={columns}
                         options={{
-                            responsive: "standard"                
+                            responsive: "standard",
+                            rowsPerPage: 5           
                         }}
                     />
                 </Box>

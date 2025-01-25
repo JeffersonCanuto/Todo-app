@@ -52,6 +52,8 @@ const App:React.FC = () => {
 					setTodos={setTodos}
 				/>
 				<br />
+				<br />
+				<br />
 				<DataTable todos={todos} />
 			</form>
 		</div>
