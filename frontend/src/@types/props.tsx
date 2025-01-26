@@ -14,4 +14,6 @@ export type TodoProps = {
     title: string;
     description: string;
     completed: boolean;
+    status: boolean;
+    actions: boolean
 };

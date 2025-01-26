@@ -5,8 +5,7 @@ import { InputLabel } from '@mui/material';
 import Buttons from "./Buttons";
 import Inputs from "./Inputs";
 
-import { InputProps } from "../types/props";
-import { TodoProps } from "../types/props";
+import { InputProps, TodoProps } from "../@types/props";
 
 type Todos = InputProps & {
     todos: TodoProps[] | [];
