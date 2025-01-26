@@ -93,11 +93,11 @@ const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
         const {
             title,
             description,
-            status,
+            pending,
             actions
         } = todo;
 
-        return [title, description, status, actions];
+        return [title, description, pending, actions];
     });
 }
 

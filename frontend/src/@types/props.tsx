@@ -14,6 +14,6 @@ export interface TodoProps {
     title: string;
     description: string;
     completed: boolean;
-    status: boolean;
+    pending: boolean;
     actions: boolean
 };
