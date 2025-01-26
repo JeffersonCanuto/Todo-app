@@ -1,4 +1,4 @@
-import React, { useCallback }from "react";
+import React, { useState, useCallback }from "react";
 
 import Box from '@mui/material/Box';
 import Tooltip from "@mui/material/Tooltip";
@@ -14,11 +14,11 @@ import { FaXmark } from "react-icons/fa6";
 import { PiPlusBold } from "react-icons/pi";
 import { BsTrash } from "react-icons/bs";
 
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
 import { TodoProps } from "../@types/props"; 
 
-interface Todo {
+interface TodoItems {
     todos: TodoProps[] | []
 }
 
@@ -26,8 +26,19 @@ interface ColumnsItems {
     name: string;
     label: string;
     options: {
-        filter: boolean,
+        filter: boolean;
         sort: boolean
+    }
+}
+
+interface StyleItems {
+    completedBtn: {
+        unclickedColor: string;
+        clickedColor: string
+    },
+    pendingBtn: {
+        unclickedColor: string;
+        clickedColor: string
     }
 }
 
@@ -66,9 +77,20 @@ let columns:ColumnsItems[] = [
     }
 ];
 
+const style:StyleItems = {
+    completedBtn: {
+        unclickedColor: "initial",
+        clickedColor: "#00b300"
+    },
+    pendingBtn: {
+        unclickedColor: "initial",
+        clickedColor: "#e60000"
+    }
+}
+
 const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
     return todos.map(todo => {
-        const { 
+        const {
             title,
             description,
             status,
@@ -79,18 +101,32 @@ const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
     });
 }
 
-const DataTable:React.FC<Todo> = ({ todos }) => {
-    const handleFinishedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>) => {
+const DataTable:React.FC<TodoItems> = ({ todos }) => {
+    const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
+
+    const handleCompletedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
 
-        console.log("Finished!");
-    },[]);
+        setRowStates(state => ({
+            ...state,
+            [rowIndex]: {
+                completed: !state[rowIndex]?.completed,
+                pending: false
+            }
+        }));
+    },[rowStates]);
 
-    const handleUnfinishedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>) => {
+    const handlePendingButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
 
-        console.log("Unfinished!");
-    },[]);
+        setRowStates(state => ({
+            ...state,
+            [rowIndex]: {
+                pending: !state[rowIndex]?.pending,
+                completed: false
+            }
+        }));
+    },[rowStates]);
 
     return (
         <StyledEngineProvider>
@@ -109,7 +145,10 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
                                     ...column, 
                                     options: {
                                         ...column.options,
-                                        customBodyRender: (value:boolean) => {
+                                        customBodyRender: (value:boolean, tableMeta:MUIDataTableMeta) => {
+                                            const rowIndex = tableMeta.rowIndex;
+                                            const rowState = rowStates[rowIndex] || { completed: false, pengding: false}
+
                                             return value === false && (
                                                 <Box style={{
                                                     width: "60px",
@@ -117,20 +156,20 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
                                                     justifyContent: "space-between", 
                                                     alignItems: "center"
                                                 }}>
-                                                    <Tooltip title="Finished">
+                                                    <Tooltip title="Completed">
                                                         <button
-                                                            aria-label="check-todo-finished" 
-                                                            onClick={handleFinishedButton}
+                                                            aria-label="check-todo-completed" 
+                                                            onClick={event => handleCompletedButton(event, rowIndex)}
                                                         >
-                                                            <FaCheck style={{ color: "default"}}/>
+                                                            <FaCheck style={{ color: rowState.completed ? style.completedBtn.clickedColor : style.completedBtn.unclickedColor }}/>
                                                         </button>
                                                     </Tooltip>
-                                                    <Tooltip title="Unfinished">
+                                                    <Tooltip title="Pending">
                                                         <button
-                                                            aria-label="check-todo-unfinished"
-                                                            onClick={handleUnfinishedButton}
+                                                            aria-label="check-todo-pending"
+                                                            onClick={event => handlePendingButton(event, rowIndex)}
                                                         >
-                                                            <FaXmark style={{ color: "default"}} />
+                                                            <FaXmark style={{ color: rowState.pending ? style.pendingBtn.clickedColor  : style.pendingBtn.unclickedColor }}/>
                                                         </button> 
                                                     </Tooltip>
                                                 </Box>
@@ -173,7 +212,9 @@ const DataTable:React.FC<Todo> = ({ todos }) => {
                         })}
                         options={{
                             responsive: "standard",
-                            rowsPerPage: 5           
+                            rowsPerPage: 5,
+                            rowsPerPageOptions: [5],
+                            selectableRows: "none"
                         }}
                     />
                 </Box>
