@@ -1,12 +1,14 @@
 /* READ method: list all data */
-type Todo = {
+interface TodoItems {
     id: number;
     title: string;
     description: string;
     completed: boolean;
+    status: boolean;
+    actions: boolean
 }
 
-const readData = async():Promise<Todo[] | []> => {
+const readData = async():Promise<TodoItems[] | []> => {
     try {
         const
             host:string = import.meta.env.VITE_API_HOST,

@@ -7,12 +7,12 @@ import Inputs from "./Inputs";
 
 import { InputProps, TodoProps } from "../@types/props";
 
-type Todos = InputProps & {
+interface TodoItems extends InputProps {
     todos: TodoProps[] | [];
     setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
-};
+}
 
-const Todo:React.FC<Todos> = ({todos, setTodos, ...props}) => {
+const Todo:React.FC<TodoItems> = ({todos, setTodos, ...props}) => {
     return (
         <main className="w-full flex relative left-8 top-20 gap-5">
             <div className="grid grid-cols-1 sm:gap-5 xl:gap-0 xl:flex">

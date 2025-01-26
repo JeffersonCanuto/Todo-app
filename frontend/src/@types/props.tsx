@@ -1,4 +1,4 @@
-export type InputProps = {
+export interface InputProps {
     titleType: string;
     titleHolder: string;
     titleName: string;
@@ -9,7 +9,7 @@ export type InputProps = {
     descId: string;
 };
 
-export type TodoProps = {
+export interface TodoProps {
     id: number;
     title: string;
     description: string;

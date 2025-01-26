@@ -10,7 +10,7 @@ import { TodoProps } from "../@types/props";
 
 import { readData } from "../services/apiRequests";
 
-type ButtonProps = { 
+interface ButtonProps { 
     todos: TodoProps[] | [];
     setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
 };

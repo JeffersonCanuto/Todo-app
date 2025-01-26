@@ -103,7 +103,7 @@ const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
 
 const DataTable:React.FC<TodoItems> = ({ todos }) => {
     const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
-
+    
     const handleCompletedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
 
