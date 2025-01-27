@@ -1,4 +1,4 @@
-import React, { useState, useCallback }from "react";
+import React, { useState, useEffect, useCallback }from "react";
 
 import Box from '@mui/material/Box';
 import Tooltip from "@mui/material/Tooltip";
@@ -103,7 +103,20 @@ const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
 
 const DataTable:React.FC<TodoItems> = ({ todos }) => {
     const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
-    
+
+    useEffect(() => {
+        let rows:{[key:number]:{completed: boolean; pending:boolean}} = {};
+
+        todos.forEach(todo => {
+            rows[todo.id - 1] = {
+                completed: todo.completed,
+                pending: todo.pending
+            };
+        });
+
+        setRowStates(rows);
+    }, [todos]);
+
     const handleCompletedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
 
@@ -147,9 +160,9 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                         ...column.options,
                                         customBodyRender: (value:boolean, tableMeta:MUIDataTableMeta) => {
                                             const rowIndex = tableMeta.rowIndex;
-                                            const rowState = rowStates[rowIndex] || { completed: false, pengding: false}
+                                            const rowState = rowStates[rowIndex] || { completed: false, pending: false };
 
-                                            return value === false && (
+                                            return value === true && (
                                                 <Box style={{
                                                     width: "60px",
                                                     display: "flex",
