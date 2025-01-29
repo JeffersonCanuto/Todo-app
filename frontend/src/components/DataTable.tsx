@@ -144,9 +144,10 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
     return (
         <StyledEngineProvider>
             <ThemeProvider theme={createTheme()}>
-                <Box style={{ 
+                <Box style={{
                     width: "93%", 
-                    minHeight: "400px",
+                    maxHeight: "500px",
+                    minHeight: "300px",
                     margin: "auto"
                 }}>
                     <MUIDataTable
@@ -225,7 +226,7 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                         })}
                         options={{
                             responsive: "standard",
-                            rowsPerPage: 5,
+                            rowsPerPage: 3,
                             rowsPerPageOptions: [5],
                             selectableRows: "none"
                         }}

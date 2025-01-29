@@ -14,7 +14,7 @@ interface TodoItems extends InputProps {
 
 const Todo:React.FC<TodoItems> = ({todos, setTodos, ...props}) => {
     return (
-        <main className="w-full flex relative left-8 top-20 gap-5">
+        <main className="w-full flex sm:justify-center sm:items-center relative top-[60px] xl:top-24 gap-5">
             <div className="grid grid-cols-1 sm:gap-5 xl:gap-0 xl:flex">
                 <InputLabel 
                     className="mr-4 mt-3" 
