@@ -44,6 +44,14 @@ interface StyleItems {
 
 let columns:ColumnsItems[] = [
     {
+        name: "id",
+        label: "ID",
+        options: {
+            filter: true,
+            sort: true
+        }
+    },
+    {
         name: "title",
         label: "TITLE",
         options: {
@@ -88,16 +96,17 @@ const style:StyleItems = {
     }
 }
 
-const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
+const customizeData = (todos: TodoProps[] | []):(number | string | boolean)[][] => {
     return todos.map(todo => {
         const {
+            id,
             title,
             description,
             pending,
             actions
         } = todo;
 
-        return [title, description, pending, actions];
+        return [id, title, description, pending, actions];
     });
 }
 
