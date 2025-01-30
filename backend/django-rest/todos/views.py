@@ -20,7 +20,7 @@ def ApiOverview(request):
 @api_view(["GET"])
 def TodoRead(request, pk):
     if pk == 'all':
-        todo = Todo.objects.all()
+        todo = Todo.objects.all().order_by("id")
         serializer = TodoSerializer(todo, many=True)
 
         return Response(serializer.data, status.HTTP_200_OK)
