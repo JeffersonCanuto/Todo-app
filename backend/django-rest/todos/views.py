@@ -49,7 +49,7 @@ def TodoCreate(request):
 
 @api_view(["PATCH"])
 def TodoUpdate(request, pk):
-    try: 
+    try:
         todo = get_object_or_404(Todo, id=pk)
         serializer = TodoSerializer(instance=todo, data=request.data)
         
