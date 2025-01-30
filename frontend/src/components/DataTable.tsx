@@ -18,6 +18,9 @@ import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
 import { TodoProps } from "../@types/props"; 
 
+import romans from "romans";
+
+/* Interfaces */
 interface TodoItems {
     todos: TodoProps[] | []
 }
@@ -42,7 +45,13 @@ interface StyleItems {
     }
 }
 
-let columns:ColumnsItems[] = [
+/* Customized data for MUIDataTable entry */
+const customizedData = (todos: TodoProps[] | []):(number | string | boolean)[][] => {
+    return todos.map(todo => [ todo.id, todo.title, todo.description, todo.pending, todo.actions ]);
+}
+
+/* Customized columns for MUIDataTable entry */
+let customizeColumns:ColumnsItems[] = [
     {
         name: "id",
         label: "ID",
@@ -85,6 +94,7 @@ let columns:ColumnsItems[] = [
     }
 ];
 
+/* Customized styles for DataTable component */
 const style:StyleItems = {
     completedBtn: {
         unclickedColor: "initial",
@@ -94,20 +104,6 @@ const style:StyleItems = {
         unclickedColor: "initial",
         clickedColor: "#e60000"
     }
-}
-
-const customizeData = (todos: TodoProps[] | []):(number | string | boolean)[][] => {
-    return todos.map(todo => {
-        const {
-            id,
-            title,
-            description,
-            pending,
-            actions
-        } = todo;
-
-        return [id, title, description, pending, actions];
-    });
 }
 
 const DataTable:React.FC<TodoItems> = ({ todos }) => {
@@ -161,8 +157,8 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                 }}>
                     <MUIDataTable
                         title="TO-DO LIST"
-                        data={customizeData(todos)}
-                        columns={columns.map((column:any) => {
+                        data={customizedData(todos)}
+                        columns={customizeColumns.map((column:any) => {
                             if (column.name.includes("status")) {
                                 return {
                                     ...column, 
@@ -231,7 +227,21 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                 }
                             }
 
-                            return column;
+                            return {
+                                ...column,
+                                options: {
+                                    ...column.options,
+                                    customBodyRender: (value:string | number) => {   
+                                        return (
+                                            <p style={{ display: "flex", justifyContent: "center"}}>
+                                                {
+                                                    typeof value === "number" ? romans.romanize(value) : value
+                                                }
+                                            </p>
+                                        )
+                                    }
+                                }
+                            }
                         })}
                         options={{
                             responsive: "standard",
