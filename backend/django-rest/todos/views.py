@@ -17,20 +17,6 @@ def ApiOverview(request):
         "Delete": "/todo-delete/<str:pk>/"
     }, status.HTTP_200_OK)
 
-@api_view(["POST"])
-def TodoCreate(request):
-    try: 
-        serializer = TodoSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(serializer.data, status.HTTP_200_OK)
-        else:
-            return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
-    except Exception as err:
-        return Response({"error": "Not possible to create todo...", "details": str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 @api_view(["GET"])
 def TodoRead(request, pk):
     if pk == 'all':
@@ -46,6 +32,20 @@ def TodoRead(request, pk):
             return Response(serializer.data, status.HTTP_200_OK)
         except Exception as err:
             return Response({"error": "Todo not found...", "details": str(err)}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(["POST"])
+def TodoCreate(request):
+    try: 
+        serializer = TodoSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data, status.HTTP_200_OK)
+        else:
+            return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+    except Exception as err:
+        return Response({"error": "Not possible to create todo...", "details": str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["PATCH"])
 def TodoUpdate(request, pk):
