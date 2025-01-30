@@ -17,93 +17,10 @@ import { BsTrash } from "react-icons/bs";
 import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
 import { TodoProps } from "../@types/props"; 
+import { customData, customColumns, tableStyles } from "../constants/datatable";
 
-import romans from "romans";
-
-/* Interfaces */
 interface TodoItems {
     todos: TodoProps[] | []
-}
-
-interface ColumnsItems {
-    name: string;
-    label: string;
-    options: {
-        filter: boolean;
-        sort: boolean
-    }
-}
-
-interface StyleItems {
-    completedBtn: {
-        unclickedColor: string;
-        clickedColor: string
-    },
-    pendingBtn: {
-        unclickedColor: string;
-        clickedColor: string
-    }
-}
-
-/* Customized data for MUIDataTable entry */
-const customizedData = (todos: TodoProps[] | []):(number | string | boolean)[][] => {
-    return todos.map(todo => [ todo.id, todo.title, todo.description, todo.pending, todo.actions ]);
-}
-
-/* Customized columns for MUIDataTable entry */
-let customizeColumns:ColumnsItems[] = [
-    {
-        name: "id",
-        label: "ID",
-        options: {
-            filter: true,
-            sort: true
-        }
-    },
-    {
-        name: "title",
-        label: "TITLE",
-        options: {
-            filter: true,
-            sort: true
-        }
-    },
-    {
-        name: "description",
-        label: "DESCRIPTION",
-        options: {
-            filter: true,
-            sort: true
-        }
-    },
-    {
-        name: "status",
-        label: "STATUS",
-        options: {
-            filter: false,
-            sort: false
-        }
-    },
-    {
-        name: "actions",
-        label: "ACTIONS",
-        options: {
-            filter: false,
-            sort: false
-        }
-    }
-];
-
-/* Customized styles for DataTable component */
-const style:StyleItems = {
-    completedBtn: {
-        unclickedColor: "initial",
-        clickedColor: "#00b300"
-    },
-    pendingBtn: {
-        unclickedColor: "initial",
-        clickedColor: "#e60000"
-    }
 }
 
 const DataTable:React.FC<TodoItems> = ({ todos }) => {
@@ -157,8 +74,8 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                 }}>
                     <MUIDataTable
                         title="TO-DO LIST"
-                        data={customizedData(todos)}
-                        columns={customizeColumns.map((column:any) => {
+                        data={customData(todos)}
+                        columns={customColumns.map((column:any) => {
                             if (column.name.includes("status")) {
                                 return {
                                     ...column, 
@@ -180,7 +97,7 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                                             aria-label="check-todo-completed" 
                                                             onClick={event => handleCompletedButton(event, rowIndex)}
                                                         >
-                                                            <FaCheck style={{ color: rowState.completed ? style.completedBtn.clickedColor : style.completedBtn.unclickedColor }}/>
+                                                            <FaCheck style={{ color: rowState.completed ? tableStyles.completedBtn.clickedColor : tableStyles.completedBtn.unclickedColor }}/>
                                                         </button>
                                                     </Tooltip>
                                                     <Tooltip title="Pending">
@@ -188,7 +105,7 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                                             aria-label="check-todo-pending"
                                                             onClick={event => handlePendingButton(event, rowIndex)}
                                                         >
-                                                            <FaXmark style={{ color: rowState.pending ? style.pendingBtn.clickedColor  : style.pendingBtn.unclickedColor }}/>
+                                                            <FaXmark style={{ color: rowState.pending ? tableStyles.pendingBtn.clickedColor  : tableStyles.pendingBtn.unclickedColor }}/>
                                                         </button> 
                                                     </Tooltip>
                                                 </Box>
@@ -233,10 +150,13 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                     ...column.options,
                                     customBodyRender: (value:string | number) => {   
                                         return (
-                                            <p style={{ display: "flex", justifyContent: "center"}}>
-                                                {
-                                                    typeof value === "number" ? romans.romanize(value) : value
-                                                }
+                                            <p 
+                                                style={{ 
+                                                    display: "flex",
+                                                    justifyContent: "center"
+                                                }}
+                                            >
+                                                {value}
                                             </p>
                                         )
                                     }
