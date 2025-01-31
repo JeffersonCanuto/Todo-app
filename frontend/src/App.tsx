@@ -36,7 +36,7 @@ const descriptionProps: DescriptionProps = {
 
 const App:React.FC = () => {
 	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
-
+	
   	return (
     	<div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-300">
 			<form className="w-[48vw] h-[95vh] mx-auto flex flex-col bg-white rounded-3xl">
@@ -49,10 +49,11 @@ const App:React.FC = () => {
 					{...titleProps}
 					{...descriptionProps}
 					todos={todos}
+					todosLength={todos.length}
 					setTodos={setTodos}
 				/>
 				<br />
-				<DataTable todos={todos} />
+				<DataTable todos={todos} todosLength={todos.length} />
 			</form>
 		</div>
   	)
