@@ -8,25 +8,21 @@ import { Button } from '@mui/material';
 
 import { TodoProps } from "../@types/props";
 
-import { readData } from "../services/apiRequests";
+import { readAllTodos } from "../services/apiRequests";
 
-type ButtonProps = { 
+interface ButtonProps { 
     todos: TodoProps[] | [];
     setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
+    todosLength: number
 };
 
-const Buttons:React.FC<ButtonProps> = ({ todos, setTodos }) => {
-    const [ dataLength, setDataLength ] = useState<number>(todos.length);
-
+const Buttons:React.FC<ButtonProps> = ({ todos, todosLength, setTodos }) => {
     const handleTodoAdd = () => {
         console.log("Add todos!");
     }
     
     const handleTodoList = useCallback(async() => {
-        const data = await readData();
-
-        setTodos(data);
-        setDataLength(data.length);
+        setTodos(await readAllTodos());
     }, []);
 
     return (
@@ -53,7 +49,7 @@ const Buttons:React.FC<ButtonProps> = ({ todos, setTodos }) => {
                         
                         <>
                             {
-                                dataLength === 0 ?
+                                todosLength === 0 ?
                                     <>
                                         <span className="text-[10px]">List</span>
                                         <MdFilterList className="ml-1 text-[14px]"/>

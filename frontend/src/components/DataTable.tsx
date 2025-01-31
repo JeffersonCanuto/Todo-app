@@ -1,13 +1,9 @@
-import React, { useState, useCallback }from "react";
+import React, { useState, useEffect, useCallback }from "react";
 
 import Box from '@mui/material/Box';
 import Tooltip from "@mui/material/Tooltip";
 
-import { 
-    createTheme, 
-    StyledEngineProvider, 
-    ThemeProvider 
-} from "@mui/material/styles";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -17,92 +13,45 @@ import { BsTrash } from "react-icons/bs";
 import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
 import { TodoProps } from "../@types/props"; 
+import { customData, customColumns, tableStyles, tableThemes } from "../constants/datatable";
+
+import { updateStatus } from "../services/apiRequests";
 
 interface TodoItems {
-    todos: TodoProps[] | []
+    todos: TodoProps[] | [];
+    todosLength: number
 }
 
-interface ColumnsItems {
-    name: string;
-    label: string;
-    options: {
-        filter: boolean;
-        sort: boolean
-    }
-}
-
-interface StyleItems {
-    completedBtn: {
-        unclickedColor: string;
-        clickedColor: string
-    },
-    pendingBtn: {
-        unclickedColor: string;
-        clickedColor: string
-    }
-}
-
-let columns:ColumnsItems[] = [
-    {
-        name: "title",
-        label: "TITLE",
-        options: {
-            filter: true,
-            sort: true
-        }
-    },
-    {
-        name: "description",
-        label: "DESCRIPTION",
-        options: {
-            filter: true,
-            sort: true
-        }
-    },
-    {
-        name: "status",
-        label: "STATUS",
-        options: {
-            filter: false,
-            sort: false
-        }
-    },
-    {
-        name: "actions",
-        label: "ACTIONS",
-        options: {
-            filter: false,
-            sort: false
-        }
-    }
-];
-
-const style:StyleItems = {
-    completedBtn: {
-        unclickedColor: "initial",
-        clickedColor: "#00b300"
-    },
-    pendingBtn: {
-        unclickedColor: "initial",
-        clickedColor: "#e60000"
-    }
-}
-
-const customizeData = (todos: TodoProps[] | []):(string | boolean)[][] => {
-    return todos.map(todo => {
-        const {
-            title,
-            description,
-            status,
-            actions
-        } = todo;
-
-        return [title, description, status, actions];
-    });
-}
-
-const DataTable:React.FC<TodoItems> = ({ todos }) => {
+const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
     const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
+    const [ rowIndex, setRowIndex ] = useState<number>(0);
+    const [ isStatusClicked, setIsStatusClicked ] = useState<boolean>(false);
+
+    useEffect(() => {
+        let rows:{[key:number]:{completed: boolean; pending:boolean}} = {};
+
+        todos.forEach(todo => {
+            rows[todo.id - 1] = {
+                completed: todo.completed,
+                pending: todo.pending
+            };
+        });
+
+        setRowStates(rows);
+        setIsStatusClicked(false);
+    }, [todos]);
+
+    useEffect(() => {
+        const 
+            targetIndex:number = rowIndex + 1,
+            targetData:Partial<TodoProps> = rowStates[`${rowIndex}`];
+
+        if(Object.keys(rowStates).length && isStatusClicked) {
+            (async function updateStatusDB() {
+                await updateStatus(targetIndex, targetData);
+            })();
+        }
+    }, [rowStates]);
 
     const handleCompletedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
@@ -114,6 +63,8 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                 pending: false
             }
         }));
+        setRowIndex(rowIndex);
+        setIsStatusClicked(true);
     },[rowStates]);
 
     const handlePendingButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
@@ -126,20 +77,24 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                 completed: false
             }
         }));
+        setRowIndex(rowIndex);
+        setIsStatusClicked(true);
     },[rowStates]);
 
     return (
         <StyledEngineProvider>
-            <ThemeProvider theme={createTheme()}>
-                <Box style={{ 
-                    width: "93%", 
-                    minHeight: "400px",
+            <ThemeProvider theme={tableThemes(todosLength)}>
+                <Box style={{
+                    maxWidth: "93%",
+                    width: "100%", 
+                    maxHeight: "50%",
+                    height: "100%",
                     margin: "auto"
                 }}>
                     <MUIDataTable
                         title="TO-DO LIST"
-                        data={customizeData(todos)}
-                        columns={columns.map((column:any) => {
+                        data={customData(todos)}
+                        columns={customColumns.map((column:any) => {
                             if (column.name.includes("status")) {
                                 return {
                                     ...column, 
@@ -147,9 +102,9 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                         ...column.options,
                                         customBodyRender: (value:boolean, tableMeta:MUIDataTableMeta) => {
                                             const rowIndex = tableMeta.rowIndex;
-                                            const rowState = rowStates[rowIndex] || { completed: false, pengding: false}
+                                            const rowState = rowStates[rowIndex] || { completed: false, pending: false };
 
-                                            return value === false && (
+                                            return value === true && (
                                                 <Box style={{
                                                     width: "60px",
                                                     display: "flex",
@@ -161,7 +116,7 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                                             aria-label="check-todo-completed" 
                                                             onClick={event => handleCompletedButton(event, rowIndex)}
                                                         >
-                                                            <FaCheck style={{ color: rowState.completed ? style.completedBtn.clickedColor : style.completedBtn.unclickedColor }}/>
+                                                            <FaCheck style={{ color: rowState.completed ? tableStyles.completedBtn.clickedColor : tableStyles.completedBtn.unclickedColor }}/>
                                                         </button>
                                                     </Tooltip>
                                                     <Tooltip title="Pending">
@@ -169,7 +124,7 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                                             aria-label="check-todo-pending"
                                                             onClick={event => handlePendingButton(event, rowIndex)}
                                                         >
-                                                            <FaXmark style={{ color: rowState.pending ? style.pendingBtn.clickedColor  : style.pendingBtn.unclickedColor }}/>
+                                                            <FaXmark style={{ color: rowState.pending ? tableStyles.pendingBtn.clickedColor  : tableStyles.pendingBtn.unclickedColor }}/>
                                                         </button> 
                                                     </Tooltip>
                                                 </Box>
@@ -208,13 +163,31 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
                                 }
                             }
 
-                            return column;
+                            return {
+                                ...column,
+                                options: {
+                                    ...column.options,
+                                    customBodyRender: (value:string | number) => {   
+                                        return (
+                                            <p 
+                                                style={{ 
+                                                    display: "flex",
+                                                    justifyContent: "center"
+                                                }}
+                                            >
+                                                {value}
+                                            </p>
+                                        )
+                                    }
+                                }
+                            }
                         })}
                         options={{
                             responsive: "standard",
-                            rowsPerPage: 5,
+                            rowsPerPage: 3,
                             rowsPerPageOptions: [5],
-                            selectableRows: "none"
+                            selectableRows: "none",
+                            filter: false
                         }}
                     />
                 </Box>

@@ -17,6 +17,22 @@ def ApiOverview(request):
         "Delete": "/todo-delete/<str:pk>/"
     }, status.HTTP_200_OK)
 
+@api_view(["GET"])
+def TodoRead(request, pk):
+    if pk == 'all':
+        todo = Todo.objects.all().order_by("id")
+        serializer = TodoSerializer(todo, many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+    else:
+        try:
+            todo = get_object_or_404(Todo, id=pk)
+            serializer = TodoSerializer(todo, many=False)
+
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Exception as err:
+            return Response({"error": "Todo not found...", "details": str(err)}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(["POST"])
 def TodoCreate(request):
     try: 
@@ -31,25 +47,9 @@ def TodoCreate(request):
     except Exception as err:
         return Response({"error": "Not possible to create todo...", "details": str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(["GET"])
-def TodoRead(request, pk):
-    if pk == 'all':
-        todo = Todo.objects.all()
-        serializer = TodoSerializer(todo, many=True)
-
-        return Response(serializer.data, status.HTTP_200_OK)
-    else:
-        try:
-            todo = get_object_or_404(Todo, id=pk)
-            serializer = TodoSerializer(todo, many=False)
-
-            return Response(serializer.data, status.HTTP_200_OK)
-        except Exception as err:
-            return Response({"error": "Todo not found...", "details": str(err)}, status=status.HTTP_404_NOT_FOUND)
-
 @api_view(["PATCH"])
 def TodoUpdate(request, pk):
-    try: 
+    try:
         todo = get_object_or_404(Todo, id=pk)
         serializer = TodoSerializer(instance=todo, data=request.data)
         
