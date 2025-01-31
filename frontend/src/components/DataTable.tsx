@@ -15,6 +15,8 @@ import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 import { TodoProps } from "../@types/props"; 
 import { customData, customColumns, tableStyles, tableThemes } from "../constants/datatable";
 
+import { updateStatus } from "../services/apiRequests";
+
 interface TodoItems {
     todos: TodoProps[] | [];
     todosLength: number
@@ -22,6 +24,8 @@ interface TodoItems {
 
 const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
     const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
+    const [ rowIndex, setRowIndex ] = useState<number>(0);
+    const [ isStatusClicked, setIsStatusClicked ] = useState<boolean>(false);
 
     useEffect(() => {
         let rows:{[key:number]:{completed: boolean; pending:boolean}} = {};
@@ -34,7 +38,20 @@ const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
         });
 
         setRowStates(rows);
+        setIsStatusClicked(false);
     }, [todos]);
+
+    useEffect(() => {
+        const 
+            targetIndex:number = rowIndex + 1,
+            targetData:Partial<TodoProps> = rowStates[`${rowIndex}`];
+
+        if(Object.keys(rowStates).length && isStatusClicked) {
+            (async function updateStatusDB() {
+                await updateStatus(targetIndex, targetData);
+            })();
+        }
+    }, [rowStates]);
 
     const handleCompletedButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
         event.preventDefault();
@@ -46,6 +63,8 @@ const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
                 pending: false
             }
         }));
+        setRowIndex(rowIndex);
+        setIsStatusClicked(true);
     },[rowStates]);
 
     const handlePendingButton = useCallback((event:React.MouseEvent<HTMLButtonElement>, rowIndex:number) => {
@@ -58,6 +77,8 @@ const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
                 completed: false
             }
         }));
+        setRowIndex(rowIndex);
+        setIsStatusClicked(true);
     },[rowStates]);
 
     return (
@@ -165,7 +186,8 @@ const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
                             responsive: "standard",
                             rowsPerPage: 3,
                             rowsPerPageOptions: [5],
-                            selectableRows: "none"
+                            selectableRows: "none",
+                            filter: false
                         }}
                     />
                 </Box>
