@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 
 import { TodoProps } from "../@types/props";
 
-import { readData } from "../services/apiRequests";
+import { readAllTodos } from "../services/apiRequests";
 
 interface ButtonProps { 
     todos: TodoProps[] | [];
@@ -22,7 +22,7 @@ const Buttons:React.FC<ButtonProps> = ({ todos, todosLength, setTodos }) => {
     }
     
     const handleTodoList = useCallback(async() => {
-        setTodos(await readData());
+        setTodos(await readAllTodos());
     }, []);
 
     return (

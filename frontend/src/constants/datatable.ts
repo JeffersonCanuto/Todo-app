@@ -33,7 +33,7 @@ let customColumns:ColumnsItems[] = [
         name: "index",
         label: "INDEX",
         options: {
-            filter: true,
+            filter: false,
             sort: true
         }
     },
@@ -41,7 +41,7 @@ let customColumns:ColumnsItems[] = [
         name: "title",
         label: "TITLE",
         options: {
-            filter: true,
+            filter: false,
             sort: true
         }
     },
@@ -49,7 +49,7 @@ let customColumns:ColumnsItems[] = [
         name: "description",
         label: "DESCRIPTION",
         options: {
-            filter: true,
+            filter: false,
             sort: true
         }
     },
@@ -101,6 +101,14 @@ const tableThemes = (todosLength:number) => {
                         color: "#737373"
                     }
                 },
+            },
+            MuiInputBase: {
+                styleOverrides: {
+                    input: {
+                        color: "#737373",
+                        fontSize: "16px"
+                    }
+                }
             },
             MuiTableCell: {
                 styleOverrides: {
