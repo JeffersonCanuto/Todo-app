@@ -3,11 +3,7 @@ import React, { useState, useEffect, useCallback }from "react";
 import Box from '@mui/material/Box';
 import Tooltip from "@mui/material/Tooltip";
 
-import { 
-    createTheme, 
-    StyledEngineProvider, 
-    ThemeProvider 
-} from "@mui/material/styles";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -17,13 +13,14 @@ import { BsTrash } from "react-icons/bs";
 import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
 import { TodoProps } from "../@types/props"; 
-import { customData, customColumns, tableStyles } from "../constants/datatable";
+import { customData, customColumns, tableStyles, tableThemes } from "../constants/datatable";
 
 interface TodoItems {
-    todos: TodoProps[] | []
+    todos: TodoProps[] | [];
+    todosLength: number
 }
 
-const DataTable:React.FC<TodoItems> = ({ todos }) => {
+const DataTable:React.FC<TodoItems> = ({ todos, todosLength }) => {
     const [ rowStates, setRowStates ] = useState<{[key: number]: { completed: boolean; pending: boolean }}>({});
 
     useEffect(() => {
@@ -65,11 +62,12 @@ const DataTable:React.FC<TodoItems> = ({ todos }) => {
 
     return (
         <StyledEngineProvider>
-            <ThemeProvider theme={createTheme()}>
+            <ThemeProvider theme={tableThemes(todosLength)}>
                 <Box style={{
-                    width: "93%", 
-                    maxHeight: "500px",
-                    minHeight: "300px",
+                    maxWidth: "93%",
+                    width: "100%", 
+                    maxHeight: "50%",
+                    height: "100%",
                     margin: "auto"
                 }}>
                     <MUIDataTable

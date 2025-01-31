@@ -1,5 +1,7 @@
+import { createTheme } from "@mui/material/styles";
 import { TodoProps } from "../@types/props";
 
+/* Interfaces for typing columns and styles */
 interface ColumnsItems {
     name: string;
     label: string;
@@ -9,7 +11,7 @@ interface ColumnsItems {
     }
 }
 
-interface StyleItems {
+interface StylesItems {
     completedBtn: {
         unclickedColor: string;
         clickedColor: string
@@ -70,19 +72,73 @@ let customColumns:ColumnsItems[] = [
 ];
 
 /* Customized styles for DataTable component */
-const tableStyles:StyleItems = {
+const tableStyles:StylesItems = {
     completedBtn: {
-        unclickedColor: "initial",
-        clickedColor: "#00b300"
+        unclickedColor: "#737373",
+        clickedColor: "#00e600"
     },
     pendingBtn: {
-        unclickedColor: "initial",
+        unclickedColor: "#737373",
         clickedColor: "#e60000"
     }
 }
 
+/* Customized themes for DataTable component */
+const tableThemes = (todosLength:number) => {
+    return createTheme({
+        components: {
+            MuiTypography: {
+                styleOverrides: {
+                    root: {
+                        color: "#737373",
+                        fontSize: "16px"
+                    }
+                }
+            },
+            MuiIconButton: {
+                styleOverrides: {
+                    root: {
+                        color: "#737373"
+                    }
+                },
+            },
+            MuiTableCell: {
+                styleOverrides: {
+                    root: {
+                        color: "#737373"
+                    },
+                    head: {
+                        "&:nth-of-type(1)": {
+                            position: "relative",
+                            left: "15px"   
+                        },
+                        "&:nth-of-type(2)": {
+                            position: "relative",
+                            left: "15px"
+                        },
+                        "&:nth-of-type(3)": {
+                            position: "relative",
+                            left: todosLength === 0 ? "0px" : "75px"
+                        }
+                    }
+                }
+            },
+            MuiTablePagination: {
+                styleOverrides: {
+                    displayedRows: {
+                        color: "#737373"
+                    },
+                    actions: {
+                        color: "#737373"
+                    }
+                }
+            }
+        }
+    });
+}
 export {
     customData,
     customColumns,
-    tableStyles
+    tableStyles,
+    tableThemes
 }
