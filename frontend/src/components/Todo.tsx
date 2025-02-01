@@ -30,7 +30,11 @@ const Todo:React.FC<TodoItems> = ({ todosLength, handleTodoAdd, handleTodoList, 
                 <Inputs {...props} />
             </div>
             <div className="w-[10vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
-                <Buttons todosLength={todosLength} handleTodoAdd={handleTodoAdd} handleTodoList={handleTodoList} />
+                <Buttons 
+                    todosLength={todosLength} 
+                    handleTodoAdd={handleTodoAdd} 
+                    handleTodoList={handleTodoList}
+                />
             </div>
         </main> 
     );

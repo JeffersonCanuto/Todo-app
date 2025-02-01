@@ -1,30 +1,16 @@
 import React, { useState, useCallback } from 'react';
 import { LuNotebookPen } from "react-icons/lu";
 
-import { TodoProps } from "./@types/props";
-import { readAllTodos } from "./services/apiRequests";
+import { TodoProps, TitleProps, DescriptionProps } from "./@types/props";
+import { readAllTodos } from "./services/requests";
 import DataTable from './components/DataTable';
 import Todo from "./components/Todo";
-
-interface TitleProps {
-	titleType: string;
-	titleHolder: string;
-	titleName: string;
-	titleId: string;
-};
 
 const titleProps : TitleProps = {
 	titleType: "title",
 	titleHolder: "Add a title...",
 	titleName: "title",
 	titleId: "title"
-};
-
-interface DescriptionProps {
-	descType: string;
-	descHolder: string;
-	descName: string;
-	descId: string;
 };
 
 const descriptionProps: DescriptionProps = {

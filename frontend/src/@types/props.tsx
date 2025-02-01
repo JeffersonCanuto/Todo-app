@@ -8,7 +8,6 @@ export interface InputProps {
     descName: string;
     descId: string;
 };
-
 export interface TodoProps {
     id: number;
     title: string;
@@ -16,4 +15,17 @@ export interface TodoProps {
     completed: boolean;
     pending: boolean;
     actions: boolean
+};
+export interface TitleProps {
+	titleType: string;
+	titleHolder: string;
+	titleName: string;
+	titleId: string;
+};
+
+export interface DescriptionProps {
+	descType: string;
+	descHolder: string;
+	descName: string;
+	descId: string;
 };

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback }from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
@@ -12,10 +12,9 @@ import { BsTrash } from "react-icons/bs";
 
 import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 
-import { TodoProps } from "../@types/props"; 
+import { TodoProps } from "../@types/props";
+import { updateStatus } from "../services/requests";
 import { customData, customColumns, tableStyles, tableThemes } from "../constants/datatable";
-
-import { updateStatus } from "../services/apiRequests";
 
 interface TodoItems {
     todos: TodoProps[] | [];
