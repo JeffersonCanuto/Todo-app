@@ -1,4 +1,4 @@
-import React, { useState, useCallback }from "react";
+import React from "react";
 
 import { FaPlus } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
@@ -6,25 +6,13 @@ import { RxUpdate } from "react-icons/rx";
 
 import { Button } from '@mui/material';
 
-import { TodoProps } from "../@types/props";
-
-import { readAllTodos } from "../services/apiRequests";
-
 interface ButtonProps { 
-    todos: TodoProps[] | [];
-    setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
-    todosLength: number
+    todosLength: number;
+    handleTodoAdd: () => void;
+    handleTodoList: () => void;
 };
 
-const Buttons:React.FC<ButtonProps> = ({ todos, todosLength, setTodos }) => {
-    const handleTodoAdd = () => {
-        console.log("Add todos!");
-    }
-    
-    const handleTodoList = useCallback(async() => {
-        setTodos(await readAllTodos());
-    }, []);
-
+const Buttons:React.FC<ButtonProps> = ({ todosLength, handleTodoAdd, handleTodoList }) => {
     return (
         <>
             {[...Array(2)].map((_, index) => (

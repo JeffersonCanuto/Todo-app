@@ -5,15 +5,15 @@ import { InputLabel } from '@mui/material';
 import Buttons from "./Buttons";
 import Inputs from "./Inputs";
 
-import { InputProps, TodoProps } from "../@types/props";
+import { InputProps } from "../@types/props";
 
 interface TodoItems extends InputProps {
-    todos: TodoProps[] | [];
-    setTodos: React.Dispatch<React.SetStateAction<TodoProps[] | []>>;
-    todosLength: number
+    todosLength: number;
+    handleTodoAdd: () => void;
+    handleTodoList: () => void
 }
 
-const Todo:React.FC<TodoItems> = ({todos, todosLength, setTodos, ...props}) => {
+const Todo:React.FC<TodoItems> = ({ todosLength, handleTodoAdd, handleTodoList, ...props }) => {
     return (
         <main className="w-full flex sm:justify-center sm:items-center relative top-[60px] xl:top-24 gap-5">
             <div className="grid grid-cols-1 sm:gap-5 xl:gap-0 xl:flex">
@@ -30,7 +30,7 @@ const Todo:React.FC<TodoItems> = ({todos, todosLength, setTodos, ...props}) => {
                 <Inputs {...props} />
             </div>
             <div className="w-[10vw] grid grid-cols-1 sm:mt-5 xl:mt-2 xl:ml-4 xl:flex xl:justify-between">
-                <Buttons todos={todos} todosLength={todosLength} setTodos={setTodos} />
+                <Buttons todosLength={todosLength} handleTodoAdd={handleTodoAdd} handleTodoList={handleTodoList} />
             </div>
         </main> 
     );
