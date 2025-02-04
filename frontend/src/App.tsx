@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { LuNotebookPen } from "react-icons/lu";
 
 import { TodoProps, TitleProps, DescriptionProps } from "./@types/props";
 import { readAllTodos } from "./services/requests";
 import DataTable from './components/DataTable';
 import Todo from "./components/Todo";
+
+import { RefItems } from "./components/Inputs";
 
 const titleProps : TitleProps = {
 	titleType: "title",
@@ -22,9 +24,15 @@ const descriptionProps: DescriptionProps = {
 
 const App:React.FC = () => {
 	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
+	const inputRef = useRef<RefItems>(null);
 
 	const handleTodoAdd = () => {
         console.log("Add todos no pai!");
+
+		if (inputRef.current) {
+			console.log(inputRef?.current.titleRef.current?.value);
+			console.log(inputRef?.current.descRef.current?.value);
+		}
     }
 
 	const handleTodoList = useCallback(async() => {
@@ -45,6 +53,7 @@ const App:React.FC = () => {
 					todosLength={todos.length}
 					handleTodoAdd={handleTodoAdd}
 					handleTodoList={handleTodoList}
+					ref={inputRef}
 				/>
 				<br />
 				<DataTable todos={todos} todosLength={todos.length} />

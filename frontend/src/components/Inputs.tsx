@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
 
 import clsx from "clsx";
 
@@ -6,7 +6,12 @@ import { Input } from '@mui/material';
 
 import { InputProps } from "../@types/props";
 
-const Inputs:React.FC<InputProps> = ({
+export interface RefItems {
+    titleRef: React.RefObject<HTMLInputElement>;
+    descRef: React.RefObject<HTMLInputElement>
+}
+
+const Inputs = forwardRef<RefItems, InputProps>(({
     titleType,
     titleHolder,
     titleName,
@@ -15,7 +20,18 @@ const Inputs:React.FC<InputProps> = ({
     descHolder,
     descName,
     descId
-}) => {
+}, ref) => {
+    const 
+        titleRef = useRef<HTMLInputElement>(null),
+        descRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => {
+        return {
+            titleRef,
+            descRef
+        }
+    });
+    
     return (
         <>
             {[...Array(2)].map((_, index) => (
@@ -45,10 +61,11 @@ const Inputs:React.FC<InputProps> = ({
                             }
                         }
                     }
+                    inputRef={index === 0 ? titleRef : descRef}
                 />
             ))}
         </>
     );
-}
+})
 
 export default Inputs;
