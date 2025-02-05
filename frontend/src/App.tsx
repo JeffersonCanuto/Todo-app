@@ -1,25 +1,25 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { LuNotebookPen } from "react-icons/lu";
 
-import { TodoProps, TitleProps, DescriptionProps } from "./@types/props";
+import { TodoProps } from "./@types/props";
 import { createTodo, readTodos } from "./services/requests";
 import DataTable from './components/DataTable';
 import Todo from "./components/Todo";
 
 import { RefItems } from "./components/Inputs";
 
-const titleProps : TitleProps = {
-	titleType: "title",
-	titleHolder: "Add a title...",
-	titleName: "title",
-	titleId: "title"
+enum TitleItems {
+	titleType = "title",
+	titleHolder = "Add a title...",
+	titleName = "title",
+	titleId = "title"
 };
 
-const descriptionProps: DescriptionProps = {
-	descType: "description",
-	descHolder: "Add a description...",
-	descName: "description",
-	descId: "description"
+enum DescriptionItems {
+	descType = "description",
+	descHolder = "Add a description...",
+	descName = "description",
+	descId = "description"
 };
 
 export interface DataItems {
@@ -56,8 +56,8 @@ const App:React.FC = () => {
 				</h1>
 				<hr className="relative top-12" />
 				<Todo
-					{...titleProps}
-					{...descriptionProps}
+					{...TitleItems}
+					{...DescriptionItems}
 					todosLength={todos.length}
 					handleTodoAdd={handleTodoAdd}
 					handleTodoList={handleTodoList}
