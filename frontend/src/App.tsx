@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { LuNotebookPen } from "react-icons/lu";
 
 import { TodoProps, TitleProps, DescriptionProps } from "./@types/props";
-import { readAllTodos } from "./services/requests";
+import { createTodo, readTodos } from "./services/requests";
 import DataTable from './components/DataTable';
 import Todo from "./components/Todo";
 
@@ -22,21 +22,29 @@ const descriptionProps: DescriptionProps = {
 	descId: "description"
 };
 
+export interface DataItems {
+	title: string | undefined;
+	description: string | undefined
+};
+
 const App:React.FC = () => {
 	const [ todos, setTodos ] = useState<TodoProps[] | []>([]);
 	const inputRef = useRef<RefItems>(null);
 
-	const handleTodoAdd = () => {
-        console.log("Add todos no pai!");
-
+	const handleTodoAdd = useCallback(async() => {
 		if (inputRef.current) {
-			console.log(inputRef?.current.titleRef.current?.value);
-			console.log(inputRef?.current.descRef.current?.value);
+			const data:DataItems = {
+				title: inputRef?.current.titleRef.current?.value,
+				description: inputRef?.current.descRef.current?.value
+			};
+
+			await createTodo(data);
+			setTodos(await readTodos());
 		}
-    }
+    }, []);
 
 	const handleTodoList = useCallback(async() => {
-        setTodos(await readAllTodos());
+        setTodos(await readTodos());
     }, []);
 
   	return (
